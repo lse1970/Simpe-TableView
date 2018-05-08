@@ -14,6 +14,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var animals = ["Cow", "Pig", "Dog", "Rabbit", "Bird"]
     var country = ["KOR", "USA", "Japan", "Africa", "China"]
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -51,15 +52,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let identifier = "Cell"
         let cell = myTableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         
+        if indexPath.section == 0   {
         // cell에 image 넣기
         let myImage = UIImage(named:"cat.png")
         cell.imageView?.image = myImage
+        }else {
+            let myImage = UIImage(named:"monkey.jpg")
+            cell.imageView?.image = myImage
+            
+        }
         
         // cell에 text 넣기
         cell.textLabel?.text = animals[indexPath.row]
         
         // cell에 detailText 넣기
-        cell.detailTextLabel?.text = country[indexPath.row]
+        // cell.detailTextLabel?.text = country[indexPath.row]
+        cell.detailTextLabel?.text = String(indexPath.row)
         
         return cell
     }
@@ -75,7 +83,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         print(myAnimal)
         
         let alert = UIAlertController(title: myAnimal, message: "Section \(mySection), Row \(myRow)", preferredStyle: .actionSheet)
+        
+        let okAction = UIAlertAction(title: "확인", style: .default)  {
+            (action: UIAlertAction) -> Void in
+            
+            //  alertController 생성
+            let popup = UIAlertController(title: "", message: "", preferredStyle: .alert)
+            let popupAction = UIAlertAction(title: "Section \(mySection) Row \(myRow)", style: .default, handler:nil)
+            let cancelAction2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            popup.addAction(popupAction)
+            popup.addAction(cancelAction2)
+            self.present(popup, animated: true, completion: nil)
+        }
+            
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(okAction)
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
     }
